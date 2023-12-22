@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
+import Todo from "../../components/Todo/Todo";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
-  console.log(user.displayName, user.email, user.photoURL);
+  // console.log(user.displayName, user.email, user.photoURL);
 
   return (
     <div className="my-10">
@@ -13,6 +14,7 @@ const Dashboard = () => {
         <p className="text-sm">{user?.email}</p>
         <hr className="w-20 border-2 mt-2 border-gray-500" />
       </div>
+      <Todo></Todo>
     </div>
   );
 };
