@@ -19,7 +19,10 @@ const Todo = () => {
 
   const { mutate } = useMutation({
     mutationFn: async (item) => {
-      const res = await axios.post("http://localhost:5000/createTask", item);
+      const res = await axios.post(
+        "https://todo-server-kappa-eight.vercel.app/createTask",
+        item
+      );
       return res.data;
     },
     onSuccess: (data) => {
@@ -40,26 +43,29 @@ const Todo = () => {
   } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/tasks/${user?.email}`);
+      const res = await axios.get(
+        `https://todo-server-kappa-eight.vercel.app/tasks/${user?.email}`
+      );
       return res.data;
     },
   });
 
-  const { mutate: updateTask } = useMutation({
-    mutationFn: async (id, item) => {
-      const res = await axios.patch(`http://localhost:5000/tasks/${id}`, item);
-      return res.data;
-    },
-    onSuccess: (data) => {
-      if (data.insertedId) {
-        Swal.fire({
-          icon: "success",
-          title: "Success...",
-          text: "Successfully created the task",
-        });
-      }
-    },
-  });
+  // const { mutate: updateTask } = useMutation({
+  //   mutationFn: async (id, item) => {
+  //     const res = await axios.patch(`https://todo-server-kappa-eight.vercel.app/tasks/${id}`, item);
+  //     console.log(res.data);
+  //     return res.data;
+  //   },
+  //   onSuccess: (data) => {
+  //     if (data.insertedId) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Success...",
+  //         text: "Successfully created the task",
+  //       });
+  //     }
+  //   },
+  // });
 
   const onSubmit = (data) => {
     const item = {
@@ -85,13 +91,29 @@ const Todo = () => {
       taskPriority: data.priority,
     };
 
-    console.log(selectedTask._id, updatedItem);
+    axios
+      .patch(
+        `https://todo-server-kappa-eight.vercel.app/tasks/${selectedTask._id}`,
+        updatedItem
+      )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Success...",
+            text: "Successfully updated the task",
+          });
+        }
+        refetch();
+      });
 
-    updateTask(selectedTask._id, updatedItem);
+    // console.log(selectedTask._id, updatedItem);
+
+    // updateTask(selectedTask._id, updatedItem);
 
     reset();
     setShowModal(false);
-    refetch();
   };
 
   const handleUpdate = (task) => {
@@ -222,9 +244,37 @@ const Todo = () => {
       </div>
       <div>
         <h3 className="text-center font-semibold text-xl">Ongoing Task</h3>
+        <div className="overflow-x-auto">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr className="text-center">
+                <th>Task Name</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
       </div>
       <div>
         <h3 className="text-center font-semibold text-xl">Completed Task</h3>
+        <div className="overflow-x-auto">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr className="text-center">
+                <th>Task Name</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
       </div>
     </div>
   );
