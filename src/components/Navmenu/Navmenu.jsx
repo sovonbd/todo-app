@@ -60,7 +60,7 @@ const Navmenu = () => {
     </div>
   );
   return (
-    <div className="py-2 lg:pt-4 shadow-sm">
+    <div className="py-2 lg:pt-4">
       <div className="navbar justify-between items-center px-0">
         <div className="navbar-start w-auto md:hidden">
           <div className="dropdown">
@@ -109,12 +109,17 @@ const Navmenu = () => {
               </label>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-black divide-y-2">
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 divide-y-2">
                 <li>
-                  <button className="btn btn-sm normal-case btn-ghost">
+                  <button className="btn btn-sm normal-case btn-ghost bg-transparent">
                     {user.displayName ? user.displayName : user.email}
                   </button>
                 </li>
+                <Link to="/dashboard">
+                  <li>
+                    <button className="btn btn-sm  btn-ghost">Dashboard</button>
+                  </li>
+                </Link>
                 <li>
                   <button className="btn btn-sm  btn-ghost" onClick={logOut}>
                     Logout
@@ -138,6 +143,7 @@ const Navmenu = () => {
           </div>
         </div>
       </div>
+      <hr className="border-[1px]"/>
     </div>
   );
 };

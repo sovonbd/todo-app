@@ -18,7 +18,7 @@ const Banner = () => {
           Create your list with the following button and get started with your
           plan
         </p>
-        <Link to="/">
+        <Link to="/dashboard">
           <button className="btn bg-[#F36527] md:px-8 md:text-lg text-white normal-case border-[#F36527] hover:bg-transparent hover:border-[#F36527] hover:border-2 mt-4">
             Get Started
           </button>
