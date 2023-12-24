@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const { createUser, updateUser } = useContext(AuthContext) || {};
@@ -17,55 +18,26 @@ const Register = () => {
     const email = form.get("email");
     const password = form.get("password");
 
-    console.log(name, photo, email, password);
-
-    // if (password.length < 6) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Oops...",
-    //     text: "Password must be at least 6 characters",
-    //   });
-    //   return;
-    // } else if (!/(?=.*[A-Z])/.test(password)) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Oops...",
-    //     text: "Password must contain at least one uppercase letter",
-    //   });
-    //   return;
-    // } else if (!/[!@#$%^&*()_+{}[\]:;<>,.?~\\-]/.test(password)) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Oops...",
-    //     text: "Password must contain at least one special character",
-    //   });
-    //   return;
-    // }
+    // console.log(name, photo, email, password);
 
     createUser(email, password)
       .then(() =>
-        updateUser(name, photo).then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "Success...",
-            text: "Account created successfully",
-          });
+        updateUser(name, photo).then((res) => {
           navigate("/");
+          setTimeout(() => {
+            toast.success(`Welcome ${res.user.displayName}!`);
+          }, 500);
         })
       )
       .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: `${err.message}`,
-        });
+        toast.success(`${err.message}`);
       });
   };
 
   return (
     <div className="py-20">
       <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md mx-auto">
-        <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-black/90 to-black/70 bg-clip-border text-white shadow-lg shadow-black/40">
+        <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-[#F36527] to-[#f36427b6] bg-clip-border text-white shadow-lg shadow-black/40">
           <h3 className="block font-sans text-3xl font-semibold leading-snug tracking-normal text-white antialiased">
             Create Account
           </h3>
@@ -152,7 +124,7 @@ const Register = () => {
             </div>
           </div>
           <div className="">
-            <button className="block w-full select-none rounded-lg bg-gradient-to-tr from-black/90 to-black/70 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-black/20 transition-all hover:shadow-lg hover:shadow-black/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+            <button className="block w-full select-none rounded-lg bg-gradient-to-tr from-[#F36527] to-[#f36427b6] py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-black/20 transition-all hover:shadow-lg hover:shadow-black/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
               Register
             </button>
             <p className="mt-6 flex justify-center font-sans text-sm font-light leading-normal text-inherit antialiased">

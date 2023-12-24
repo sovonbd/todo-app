@@ -2,15 +2,16 @@ import { Button } from "@material-tailwind/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
-import Swal from "sweetalert2";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const { logIn, signInWithGoogle, signInWithGithub } =
     useContext(AuthContext) || {};
   const location = useLocation();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -20,64 +21,46 @@ const Login = () => {
     logIn(email, password)
       .then((res) => {
         console.log(res.user);
-        Swal.fire({
-          icon: "success",
-          title: "Success...",
-          text: "Successfully logged in",
-        });
         navigate(location?.state ? location.state : "/");
+        setTimeout(() => {
+          toast.success(`Welcome Back, ${res.user.displayName}!`);
+        }, 500);
       })
       .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: `${err.message}`,
-        });
+        setError(err.message);
       });
   };
 
   const handleGoogleLogin = () => {
     signInWithGoogle()
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Success...",
-          text: "Successfully logged in",
-        });
+      .then((res) => {
         navigate(location?.state ? location.state : "/");
+        setTimeout(() => {
+          toast.success(`Welcome Back, ${res.user.displayName}!`);
+        }, 500);
       })
       .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: `${err.message}`,
-        });
+        toast.error(`Opps!!! ${err.message}`);
       });
   };
 
   const handleGithubLogin = () => {
     signInWithGithub()
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Success...",
-          text: "Successfully logged in",
-        });
+      .then((res) => {
         navigate(location?.state ? location.state : "/");
+        setTimeout(() => {
+          toast.success(`Welcome Back, ${res.user.displayName}`);
+        }, 500);
       })
       .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: `${err.message}`,
-        });
+        toast.error(`Opps!!! ${err.message}`);
       });
   };
 
   return (
     <div className="py-20">
       <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md mx-auto">
-        <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-black/90 to-black/70 bg-clip-border text-white shadow-lg shadow-black/40">
+        <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-[#F36527] to-[#f36427b6] bg-clip-border text-white shadow-lg shadow-black/40">
           <h3 className="block font-sans text-3xl font-semibold leading-snug tracking-normal text-white antialiased">
             Sign In
           </h3>
@@ -140,10 +123,15 @@ const Login = () => {
           </div>
           <div className="">
             <button
-              className="block w-full select-none rounded-lg bg-gradient-to-tr from-black/90 to-black/70 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-black/40 transition-all hover:shadow-lg hover:shadow-black/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              className="block w-full select-none rounded-lg bg-gradient-to-tr from-[#F36527] to-[#f36427b6] py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-black/40 transition-all hover:shadow-lg hover:shadow-black/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               data-ripple-light="true">
               Sign In
             </button>
+            {error ? (
+              <p className="text-red-500 mt-4 text-center">{error}</p>
+            ) : (
+              ""
+            )}
             <p className="mt-6 flex justify-center font-sans text-sm font-light leading-normal text-inherit antialiased">
               Don&apos;t have an account?
               <Link
@@ -179,6 +167,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

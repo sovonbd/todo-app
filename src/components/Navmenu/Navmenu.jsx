@@ -26,7 +26,7 @@ const Navmenu = () => {
   if (loading) {
     return <p>Loading...</p>;
   }
-  console.log(user);
+  // console.log(user);
 
   const menu = (
     <div className="flex flex-col md:flex-row md:gap-8 gap-2 lg:text-lg">
@@ -143,7 +143,7 @@ const Navmenu = () => {
           </div>
         </div>
       </div>
-      <hr className="border-[1px]"/>
+      <hr className="border-[1px]" />
     </div>
   );
 };
