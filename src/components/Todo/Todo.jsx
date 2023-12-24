@@ -50,7 +50,9 @@ const Todo = () => {
     const item = {
       taskName: data.name,
       taskDescription: data.description,
-      taskDate: format(new Date(data.date), "MMM dd, yyyy"),
+      taskDate: format(new Date(`${data.date}T00:00:00`), "MMM dd, yyyy", {
+        timeZone: "America/Winnipeg",
+      }),
       taskPriority: data.priority,
       userEmail: user.email,
       droppableId: "droppable-1",
@@ -66,7 +68,9 @@ const Todo = () => {
     const updatedItem = {
       taskName: data.name,
       taskDescription: data.description,
-      taskDate: format(new Date(data.date), "MMM dd, yyyy"),
+      taskDate: format(new Date(`${data.date}T00:00:00`), "MMM dd, yyyy", {
+        timeZone: "America/Winnipeg",
+      }),
       taskPriority: data.priority,
     };
 
@@ -155,9 +159,9 @@ const Todo = () => {
           Create A Task
         </button>
         {showModal && (
-          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 overflow-auto">
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 overflow-y-auto">
             <div className="modal-backdrop fixed inset-0 bg-black opacity-50"></div>
-            <div className="modal-content p-6 bg-white rounded-lg shadow-lg z-50 w-full md:max-w-md">
+            <div className="modal-content p-6 bg-white rounded-lg shadow-lg z-50 w-[90%] md:max-w-md h-[90vh] lg:h-auto overflow-y-auto">
               <h3 className="font-bold text-lg mb-4">
                 {selectedTask ? "Update Task" : "Create a new task"}
               </h3>
@@ -271,7 +275,12 @@ const Todo = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className="text-center text-black  hover:bg-cyan-50">
+                            className={`text-center text-black hover:bg-cyan-50 ${
+                              Date.parse(task.taskDate) <
+                              Date.now() + 2 * 24 * 60 * 60 * 1000
+                                ? "bg-red-100/70 hover:bg-red-100"
+                                : ""
+                            }`}>
                             <td>{task.taskName}</td>
                             <td>{task.taskDescription}</td>
                             <td>{task.taskDate}</td>
