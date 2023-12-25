@@ -117,7 +117,7 @@ const Navmenu = () => {
                 </li>
                 <Link to="/dashboard">
                   <li>
-                    <button className="btn btn-sm font-normal btn-ghost">
+                    <button className="btn btn-sm font-normal btn-ghost normal-case">
                       Dashboard
                     </button>
                   </li>
