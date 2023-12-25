@@ -20,11 +20,11 @@ const Login = () => {
     const password = form.get("password");
     logIn(email, password)
       .then((res) => {
-        console.log(res.user);
+        // console.log(res.user);
         navigate(location?.state ? location.state : "/");
         setTimeout(() => {
           toast.success(`Welcome Back, ${res.user.displayName}!`);
-        }, 500);
+        }, 2000);
       })
       .catch((err) => {
         setError(err.message);

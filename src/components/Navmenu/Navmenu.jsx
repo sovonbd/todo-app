@@ -110,18 +110,22 @@ const Navmenu = () => {
               <ul
                 tabIndex={0}
                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 divide-y-2">
-                <li>
-                  <button className="btn btn-sm normal-case btn-ghost bg-transparent">
+                <li className="hover:bg-transparent">
+                  <button className="normal-case hover:bg-transparent flex justify-center font-bold">
                     {user.displayName ? user.displayName : user.email}
                   </button>
                 </li>
                 <Link to="/dashboard">
                   <li>
-                    <button className="btn btn-sm  btn-ghost">Dashboard</button>
+                    <button className="btn btn-sm font-normal btn-ghost">
+                      Dashboard
+                    </button>
                   </li>
                 </Link>
                 <li>
-                  <button className="btn btn-sm  btn-ghost" onClick={logOut}>
+                  <button
+                    className="btn btn-sm font-normal btn-ghost normal-case"
+                    onClick={logOut}>
                     Logout
                   </button>
                 </li>

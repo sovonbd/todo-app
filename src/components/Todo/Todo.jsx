@@ -27,7 +27,9 @@ const Todo = () => {
   const { isLoading, refetch } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/tasks/${user?.email}`);
+      const res = await axios.get(
+        `https://todo-server-kappa-eight.vercel.app/tasks/${user?.email}`
+      );
       setTasks(res.data);
       return res.data;
     },
@@ -35,7 +37,10 @@ const Todo = () => {
 
   const { mutate } = useMutation({
     mutationFn: async (item) => {
-      const res = await axios.post("http://localhost:5000/createTask", item);
+      const res = await axios.post(
+        "https://todo-server-kappa-eight.vercel.app/createTask",
+        item
+      );
       return res.data;
     },
     onSuccess: (data) => {
@@ -75,7 +80,10 @@ const Todo = () => {
     };
 
     axios
-      .patch(`http://localhost:5000/tasks/${selectedTask._id}`, updatedItem)
+      .patch(
+        `https://todo-server-kappa-eight.vercel.app/tasks/${selectedTask._id}`,
+        updatedItem
+      )
       .then((res) => {
         // console.log(res.data);
         if (res.data.modifiedCount > 0) {
@@ -95,15 +103,17 @@ const Todo = () => {
 
   const handleDelete = (id) => {
     // console.log(id);
-    axios.delete(`http://localhost:5000/${id}`).then((res) => {
-      // console.log(res.data);
-      if (res.data.deletedCount > 0) {
-        toast("Task Deleted!", {
-          icon: "😢",
-        });
-      }
-      refetch();
-    });
+    axios
+      .delete(`https://todo-server-kappa-eight.vercel.app/${id}`)
+      .then((res) => {
+        // console.log(res.data);
+        if (res.data.deletedCount > 0) {
+          toast("Task Deleted!", {
+            icon: "😢",
+          });
+        }
+        refetch();
+      });
   };
 
   if (isLoading) {
@@ -139,9 +149,12 @@ const Todo = () => {
     }
 
     try {
-      await axios.patch(`http://localhost:5000/tasks/${draggedTask._id}`, {
-        droppableId: draggedTask.droppableId,
-      });
+      await axios.patch(
+        `https://todo-server-kappa-eight.vercel.app/tasks/${draggedTask._id}`,
+        {
+          droppableId: draggedTask.droppableId,
+        }
+      );
 
       setTasks(updatedTasks);
     } catch (error) {
@@ -344,7 +357,12 @@ const Todo = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className="text-center text-black hover:bg-cyan-100/60">
+                            className={`text-center text-black hover:bg-cyan-50 ${
+                              Date.parse(task.taskDate) <
+                              Date.now() + 2 * 24 * 60 * 60 * 1000
+                                ? "bg-red-100/70 hover:bg-red-100"
+                                : ""
+                            }`}>
                             {/* Render task details */}
                             <td>{task.taskName}</td>
                             <td>{task.taskDescription}</td>
