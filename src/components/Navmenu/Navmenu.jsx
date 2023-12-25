@@ -112,7 +112,7 @@ const Navmenu = () => {
                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 divide-y-2">
                 <li className="hover:bg-transparent">
                   <button className="normal-case hover:bg-transparent flex justify-center font-bold">
-                    {user.displayName ? user.displayName : user.email}
+                    {user?.displayName ? user.displayName : user.email}
                   </button>
                 </li>
                 <Link to="/dashboard">
